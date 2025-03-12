@@ -17,14 +17,23 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {
+       
         $guards = empty($guards) ? [null] : $guards;
-
+    
         foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+            if (Auth::guard($guard)->check() && ($request->is('login') || $request->is('register'))) {
+                return redirect()->route('dashboard-user');
             }
         }
 
+
+        if (Auth::check()) {
+            Auth::logout(); // Paksa logout
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
+    
         return $next($request);
     }
+    
 }
