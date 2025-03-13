@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - FoodShare Hub</title>
+    <title>History - FoodShare Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .stat-card {
-            transition: all 0.3s ease;
+            transition: all 0.3s ease !important;
         }
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) !important;
         }
+        
         .sidebar-link.active {
             position: relative;
         }
@@ -207,7 +208,7 @@
             @else
             <div class="flex flex-wrap">
                 @foreach($foodRequests->sortBy('id') as $index => $requests)
-                    <div class="food-request flex shadow-md bg-white p-6 mt-6 ml-[35px] mr-[35px] rounded-xs min-w-[600px] h-auto cursor-pointer hover:shadow-lg rounded-lg transition-shadow 
+                    <div class="food-request stat-card flex shadow-md bg-white p-6 mt-6 ml-[35px] mr-[35px] rounded-lg min-w-[600px] h-auto cursor-pointer 
                                 {{ $loop->iteration % 4 < 2 ? 'flex-row' : 'flex-col' }}">
                         <div class="flex flex-col justify-between w-full">
                             <div class="flex font-medium text-lg">

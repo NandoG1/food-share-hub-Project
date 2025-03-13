@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - FoodShare Hub</title>
+    <title>See Requests - FoodShare Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -203,7 +203,7 @@
                 <p class="text-gray-500">Tidak ada permintaan makanan.</p>
             @else
                 @foreach ($foodRequests as $requests)
-                <div class="food-request flex shadow-md bg-white p-6 mt-6 ml-[33px] mr-[32px] rounded-xs w-auto h-auto cursor-pointer hover:shadow-lg rounded-lg transition-shadow">
+                <div class="food-request stat-card flex shadow-md bg-white p-6 mt-6 ml-[33px] mr-[32px] rounded-xs w-auto h-auto cursor-pointer">
                     <div class="flex flex-row justify-between w-full">
                             <div>
                                 <div class="inline-flex justify-center items-center text-xs font-semibold rounded-xl bg-yellow-100 text-yellow-800 min-h-[33px] w-auto px-4 mb-4">{{ $requests->status }}</div>

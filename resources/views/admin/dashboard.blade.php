@@ -61,7 +61,7 @@
                 
                 <div class="mb-6">
                     <p class="text-xs text-green-200 font-semibold uppercase tracking-wider mb-2 ml-4">Settings</p>
-                    <a href="" class="sidebar-link flex items-center px-4 py-3 mb-2 hover:bg-green-700 hover:bg-opacity-50 rounded-lg transition-colors">
+                    <a href="{{ route('admin.settings') }}" class="sidebar-link flex items-center px-4 py-3 mb-2 hover:bg-green-700 hover:bg-opacity-50 rounded-lg transition-colors">
                         <i class="fas fa-cog mr-3 w-5 text-center"></i>
                         <span>Pengaturan</span>
                     </a>
@@ -95,7 +95,7 @@
         <div class="flex-1">
           
             <header class="bg-white shadow-md p-6 flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                <h1 class="text-2xl font-bold text-gray-800">Dashboard Admin</h1>
                 <div class="flex items-center space-x-4">
                     <button class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
                         <i class="fas fa-bell text-gray-600"></i>
@@ -108,6 +108,103 @@
                     </div>
                 </div>
             </header>
+
+            <div class="p-8">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                   
+                    <div class="stat-card bg-white rounded-xl p-6 border-l-4 border-amber-500 shadow-lg hover:shadow-xl">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-sm font-semibold uppercase text-gray-500 mb-1">Total Pemesanan</h2>
+                                <p class="text-4xl font-bold text-gray-800">{{ $totalRequests }}</p>
+                            </div>
+                            <div class="bg-amber-100 p-3 rounded-lg">
+                                <i class="fas fa-clipboard-list text-2xl text-amber-600"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center {{ $totalRequestsDifference >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                            <i class="fas {{ $totalRequestsDifference >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }} mr-1"></i>
+                            <span>{{ abs($totalRequestsDifference) }} pcs dari bulan lalu</span>
+                        </div>
+                    </div>
+                    
+                   
+                    <div class="stat-card bg-white rounded-xl p-6 border-l-4 border-green-500 shadow-lg hover:shadow-xl">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-sm font-semibold uppercase text-gray-500 mb-1">Pesanan yang disetujui</h2>
+                                <p class="text-4xl font-bold text-gray-800">{{ $approvedRequests }}</p>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-lg">
+                                <i class="fas fa-check-circle text-2xl text-green-600"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center {{ $approvedRequestsDifference >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                            <i class="fas {{ $approvedRequestsDifference >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }} mr-1"></i>
+                            <span>{{ abs($approvedRequestsDifference) }} pcs dari bulan lalu</span>
+                        </div>
+                    </div>
+                    
+                  
+                    <div class="stat-card bg-white rounded-xl p-6 border-l-4 border-blue-500 shadow-lg hover:shadow-xl">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-sm font-semibold uppercase text-gray-500 mb-1">Connected Schools</h2>
+                                <p class="text-4xl font-bold text-gray-800">{{ $connectedSchools }}</p>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-lg">
+                                <i class="fas fa-school text-2xl text-blue-600"></i>
+                            </div>
+                        </div>
+                        <div class="mt-1 text-sm text-gray-500">
+                            <span>Total Connected Schools</span>
+                        </div>
+                    </div>
+                </div>
+                
+             
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Financial Overview</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="stat-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl">
+                        <div class="bg-gradient-to-r from-amber-500 to-amber-600 p-4 text-white">
+                            <h2 class="font-semibold">Pengeluaran per Bulan</h2>
+                        </div>
+                        <div class="p-6 flex justify-between items-center">
+                            <p class="text-4xl font-bold text-gray-800">Rp 100 jt</p>
+                            <div class="bg-amber-100 p-3 rounded-full">
+                                <i class="fas fa-hand-holding-dollar text-2xl text-amber-600"></i>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-4">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-amber-500 h-2 rounded-full" style="width: 65%"></div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-2">65% dari anggaran tahunan</p>
+                        </div>
+                    </div>
+                    
+                   
+                    <div class="stat-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl">
+                        <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-4 text-white">
+                            <h2 class="font-semibold">Total Pengeluaran</h2>
+                        </div>
+                        <div class="p-6 flex justify-between items-center">
+                            <p class="text-4xl font-bold text-gray-800">Rp 350 jt</p>
+                            <div class="bg-purple-100 p-3 rounded-full">
+                                <i class="fas fa-circle-dollar-to-slot text-2xl text-purple-600"></i>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-4">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 80%"></div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-2">80% dari total anggaran</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>

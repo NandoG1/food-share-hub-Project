@@ -28,12 +28,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function(){
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'indexAdmin'])->name('admin.dashboard');
     Route::get('/admin/food-requests', [FoodRequestController::class, 'seerequests'])->name('admin.food-requests');
     Route::patch('/admin/food-requests/{id}/approve', [FoodRequestController::class, 'approve'])->name('food-requests.approve');
     Route::patch('/admin/food-requests/{id}/reject', [FoodRequestController::class, 'reject'])->name('food-requests.reject');
     Route::get('/admin/history', [AidHistoryController::class, 'historyAdmin'])->name('admin.history');
     Route::get('/admin/history/status', [AidHistoryController::class, 'seeHistory'])->name('admin.see.history');
+    Route::get('/admin/settings', [SettingsController::class, 'editAdmin'])->name('admin.settings');
+    
 });
 
 Route::middleware(['auth', 'user'])->group(function(){
