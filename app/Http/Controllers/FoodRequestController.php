@@ -53,4 +53,32 @@ class FoodRequestController extends Controller
 
         return view('food-requests.show', compact('foodRequest'));
     }
+
+    public function seerequests()
+    {
+        $foodRequests = FoodRequest::orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin-requests.see-requests', compact('foodRequests'));
+    }
+
+
+    public function approve($id)
+    {
+        $foodRequest = FoodRequest::findOrFail($id);
+        $foodRequest->status = 'approved';
+        $foodRequest->save();
+
+        return redirect()->back()->with('success', 'Permintaan makanan disetujui.');
+    }
+
+    public function reject($id)
+    {
+        $foodRequest = FoodRequest::findOrFail($id);
+        $foodRequest->status = 'rejected';
+        $foodRequest->save();
+
+        return redirect()->back()->with('success', 'Permintaan makanan ditolak.');
+    }
+
+
 }

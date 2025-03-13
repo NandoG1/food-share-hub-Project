@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AidHistoryController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FoodRequestController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\RequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,9 +24,20 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
 
+Route::middleware(['auth', 'admin'])->group(function(){
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/food-requests', [FoodRequestController::class, 'seerequests'])->name('admin.food-requests');
+    Route::patch('/admin/food-requests/{id}/approve', [FoodRequestController::class, 'approve'])->name('food-requests.approve');
+    Route::patch('/admin/food-requests/{id}/reject', [FoodRequestController::class, 'reject'])->name('food-requests.reject');
+    Route::get('/admin/history', [AidHistoryController::class, 'historyAdmin'])->name('admin.history');
+});
+
+Route::middleware(['auth', 'user'])->group(function(){
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
     Route::get('/food-requests/create', [FoodRequestController::class, 'create'])->name('food-requests.create');
     Route::post('/food-requests', [FoodRequestController::class, 'store'])->name('food-requests.store');
     Route::get('/food-requests', [FoodRequestController::class, 'index'])->name('food-requests.index');
@@ -36,8 +49,4 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
-});
-
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AuthController::class, 'adminDashboard'])->name('admin.dashboard');
 });

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -23,25 +23,25 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
-
+    
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-
-        
+    
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'user',
         ]);
-
+    
         Auth::login($user);
-
+    
         return redirect()->route('dashboard')->with('success', 'Registration successful!');
     }
+
 
     public function showLoginForm()
     {
@@ -54,76 +54,43 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-
+    
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-
+    
         $credentials = $request->only('email', 'password');
-
-   
-        if ($request->email === 'admin@gmail.com' && $request->password === 'admin1234') {
-           
-            $admin = User::updateOrCreate(
-                ['email' => 'admin@gmail.com'],
-                [
-                    'name' => 'Administrator',
-                    'password' => Hash::make('admin1234'),
-                    'role' => 'admin',
-                ]
-            );
-
-            Auth::login($admin);
-            $request->session()->regenerate();
-
-            return redirect()->route('admin.dashboard');
+        
+        if (!Auth::attempt($credentials, $request->filled('remember'))) {
+            return back()->withErrors([
+                'email' => 'Email/Password salah. Coba lagi.',
+            ])->withInput();
         }
-
-  
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
-
-            
-            if (optional(Auth::user())->isAdmin()) {
-                return redirect()->route('admin.dashboard');
-            }
-
-            return redirect()->intended('dashboard');
+    
+        $user = Auth::user();
+        if (!$user) {
+            return back()->withErrors(['email' => 'Login gagal, coba lagi.']);
         }
-
-        return back()->withErrors([
-            'email' => 'Email/Password is wrong. Please, try again.',
-        ])->withInput();
+    
+        return $user->role == 'admin'
+            ? redirect()->route('admin.dashboard')
+            : redirect()->route('dashboard');
     }
 
     public function logout(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
+         if (Auth::check()) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
         return redirect()->route('login');
     }
 
-    public function dashboard()
-    {
-        return view('dashboard');
-    }
-
-    public function adminDashboard()
-    {
-  
-        if (!Auth::user() || ! optional(Auth::user())->isAdmin()) {
-            return redirect()->route('dashboard');
-        }
-
-       
-        $userCount = User::where('role', 'user')->count();
-
-        return view('admin.dashboard', [
-            'userCount' => $userCount,
-        ]);
-    }
+    // public function dashboard()
+    // {
+    //     return view('dashboard');
+    // }
 }

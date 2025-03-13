@@ -17,14 +17,24 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {
-        $guards = empty($guards) ? [null] : $guards;
 
+        $guards = empty($guards) ? [null] : $guards;
+        
         foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+            if (Auth::guard($guard)->check() && ($request->is('login') || $request->is('register'))) {
+                $user = Auth::user();
+                return redirect()->route($user->role == 'admin' ? 'admin.dashboard' : 'dashboard');
             }
         }
+    
 
+        if (Auth::check()) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
+    
         return $next($request);
     }
+    
 }

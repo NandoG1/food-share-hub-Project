@@ -27,6 +27,7 @@
         }
     </style>
 </head>
+
 <body>
 <body class="bg-gray-100">
     <div class="flex min-h-screen">
@@ -44,16 +45,16 @@
             <nav class="mt-8 px-4">
                 <div class="mb-6">
                     <p class="text-xs text-green-200 font-semibold uppercase tracking-wider mb-2 ml-4">Main Menu</p>
-                    <a href="#" class="sidebar-link active flex items-center px-4 py-3 mb-2 bg-green-700 bg-opacity-50 rounded-lg font-medium">
+                    <a href="{{ route('admin.dashboard') }}" class="sidebar-link flex items-center px-4 py-3 mb-2 hover:bg-green-700 hover:bg-opacity-50 rounded-lg transition-colors">
                         <i class="fas fa-home mr-3 w-5 text-center"></i>
                         <span>Dashboard</span>
                     </a>
-                    <a href="{{ route ('admin.food-requests') }}" class="sidebar-link flex items-center px-4 py-3 mb-2 hover:bg-green-700 hover:bg-opacity-50 rounded-lg transition-colors">
+                    <a href="{{ route('admin.food-requests') }}" class="sidebar-link flex items-center px-4 py-3 mb-2 hover:bg-green-700 hover:bg-opacity-50 rounded-lg transition-colors">
                         <i class="fas fa-hand-holding-heart mr-3 w-5 text-center"></i>
                         <span>Lihat Permintaan</span>
                     </a>
                     
-                    <a href="{{ route('admin.history') }}" class="sidebar-link flex items-center px-4 py-3 mb-2 hover:bg-green-700 hover:bg-opacity-50 rounded-lg transition-colors">
+                    <a href="#" class="sidebar-link active flex items-center px-4 py-3 mb-2 bg-green-700 bg-opacity-50 rounded-lg font-medium">
                         <i class="fas fa-history mr-3 w-5 text-center"></i>
                         <span>Riwayat</span>
                     </a>
@@ -61,7 +62,7 @@
                 
                 <div class="mb-6">
                     <p class="text-xs text-green-200 font-semibold uppercase tracking-wider mb-2 ml-4">Settings</p>
-                    <a href="" class="sidebar-link flex items-center px-4 py-3 mb-2 hover:bg-green-700 hover:bg-opacity-50 rounded-lg transition-colors">
+                    <a href="#" class="sidebar-link flex items-center px-4 py-3 mb-2 hover:bg-green-700 hover:bg-opacity-50 rounded-lg transition-colors">
                         <i class="fas fa-cog mr-3 w-5 text-center"></i>
                         <span>Pengaturan</span>
                     </a>
@@ -95,7 +96,7 @@
         <div class="flex-1">
           
             <header class="bg-white shadow-md p-6 flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                <h1 class="text-2xl font-bold text-gray-800">History</h1>
                 <div class="flex items-center space-x-4">
                     <button class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
                         <i class="fas fa-bell text-gray-600"></i>
@@ -109,6 +110,9 @@
                 </div>
             </header>
 
+
+           
+        
         </div>
     </div>
 </body>
