@@ -33,6 +33,7 @@ Route::middleware(['auth', 'admin'])->group(function(){
     Route::patch('/admin/food-requests/{id}/approve', [FoodRequestController::class, 'approve'])->name('food-requests.approve');
     Route::patch('/admin/food-requests/{id}/reject', [FoodRequestController::class, 'reject'])->name('food-requests.reject');
     Route::get('/admin/history', [AidHistoryController::class, 'historyAdmin'])->name('admin.history');
+    Route::get('/admin/history/status', [AidHistoryController::class, 'seeHistory'])->name('admin.see.history');
 });
 
 Route::middleware(['auth', 'user'])->group(function(){

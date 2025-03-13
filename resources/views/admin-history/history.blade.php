@@ -28,6 +28,77 @@
     </style>
 </head>
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("foodRequestModal");
+        const closeModalBtn = document.getElementById("closeModal");
+
+        function openModal(requestData) {
+            modal.classList.remove("hidden");
+
+            modal.querySelector("ul").innerHTML = `
+                <li class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <span class="text-black font-medium">Nama Sekolah:</span> 
+                        <p>${requestData.school_name}</p>
+                    </div>
+                    <div class="col-span-2">
+                        <span class="text-black font-medium">Contact Person:</span> 
+                        <p>${requestData.contact_person}</p>
+                    </div>
+                </li>
+                <li class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <span class="text-black font-medium">Alamat Sekolah:</span> 
+                        <p>${requestData.address}</p>
+                    </div>
+
+                    <div class="col-span-2">
+                        <span class="text-black font-medium">Jumlah Siswa:</span> 
+                        <p>${requestData.student_count}</p>
+                    </div>
+                </li>
+                <li class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <span class="text-black font-medium">Catatan Tambahan:</span> 
+                        <p>${requestData.additional_notes}</p>
+                    </div>
+                </li>
+            `;
+        }
+
+
+        document.querySelectorAll(".food-request").forEach(item => {
+            item.addEventListener("click", function (event) {
+                if (event.target.closest(".approve-btn") || event.target.closest(".reject-btn")) {
+                    return;
+                }
+
+                const requestData = {
+                    school_name: this.querySelector("li:nth-child(1)").innerText.split(": ")[1],
+                    address: this.querySelector("li:nth-child(2)").innerText.split(": ")[1],
+                    contact_person: this.querySelector("li:nth-child(3)").innerText.split(": ")[1],
+                    student_count: this.querySelector("li:nth-child(4)").innerText.split(": ")[1],
+                    additional_notes: this.querySelector("li:nth-child(5)") ? this.querySelector("li:nth-child(5)").innerText.split(": ")[1] : "Tidak ada catatan tambahan"
+                };
+                openModal(requestData);
+            });
+        });
+
+        closeModalBtn.addEventListener("click", function () {
+            modal.classList.add("hidden"); 
+        });
+
+        modal.addEventListener("click", function (event) {
+            if (!event.target.closest(".modal-content")) {
+                modal.classList.add("hidden");
+            }
+        });
+        
+    });
+</script>
+
 <body>
 <body class="bg-gray-100">
     <div class="flex min-h-screen">
@@ -111,7 +182,62 @@
             </header>
 
 
-           
+           <div class="flex flex-row mt-10">
+                <a href="{{ route('admin.see.history') }}" 
+                class="inline-flex justify-center items-center text-md font-semibold rounded-xl bg-gray-200 text-yellow-800 min-h-[43px] w-[265px] px-4 m-10 shadow-lg hover:bg-opacity-50 transition-colors">
+                    Show All History
+                </a>
+
+
+                <a href="{{ route('admin.see.history', ['status' => 'pending']) }}" class="inline-flex justify-center items-center text-md font-semibold rounded-xl bg-yellow-100 text-yellow-800 min-h-[43px] w-[265px] px-4 m-10 shadow-lg hover:bg-opacity-50 transition-colors">
+                    Pending
+                </a href="">
+
+                <a href="{{ route('admin.see.history', ['status' => 'approved']) }}" class="inline-flex justify-center items-center text-md font-semibold rounded-xl bg-green-100 text-yellow-800 min-h-[33px] w-[265px] px-4 m-10 shadow-lg hover:bg-opacity-50 transition-colors">
+                    Approved
+                </a href="">
+
+                <a href="{{ route('admin.see.history', ['status' => 'rejected']) }}" class="inline-flex justify-center items-center text-md font-semibold rounded-xl bg-red-100 text-yellow-800 min-h-[33px] w-[265px] px-4 m-10 shadow-lg hover:bg-opacity-50 transition-colors">
+                    Rejected
+                </a href="">
+           </div>
+            
+           @if ($foodRequests->isEmpty())
+                <p class="text-gray-500">Tidak ada permintaan makanan.</p>
+            @else
+            <div class="flex flex-wrap">
+                @foreach($foodRequests->sortBy('id') as $index => $requests)
+                    <div class="food-request flex shadow-md bg-white p-6 mt-6 ml-[35px] mr-[35px] rounded-xs min-w-[600px] h-auto cursor-pointer hover:shadow-lg rounded-lg transition-shadow 
+                                {{ $loop->iteration % 4 < 2 ? 'flex-row' : 'flex-col' }}">
+                        <div class="flex flex-col justify-between w-full">
+                            <div class="flex font-medium text-lg">
+                                <p class="mr-2">Permintaan</p>
+                                <p>{{ $requests->id }}</p>
+                            </div>
+                            <ul class="list-none text-green-500">
+                                <li><span class="text-black font-medium mr-4">Nama Sekolah:</span> {{ $requests->school_name }}</li>
+                                <li><span class="text-black font-medium mr-2">Alamat Sekolah:</span> {{ $requests->address }}</li>
+                                <li><span class="text-black font-medium mr-2">Contact Person:</span> {{ $requests->contact_person }}</li>
+                                <li><span class="text-black font-medium mr-5">Jumlah Siswa:</span> {{ $requests->student_count }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+
+            <div id="foodRequestModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-1/2">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-xl font-bold">Detail Permintaan Makanan</h2>
+                            <button id="closeModal" class="text-red-500 font-bold text-xl">&times;</button>
+                        </div>
+                        <ul class="grid grid-cols-2 gap-4 mt-4">
+
+                        </ul>
+                    </div>
+                </div>
+            @endif
         
         </div>
     </div>
