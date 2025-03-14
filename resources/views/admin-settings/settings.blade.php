@@ -30,7 +30,6 @@
             font-size: 14px;
             font-weight: 400;
             color: #A5A5A5;
-            padding: 10px;
         }
     </style>
 </head>
@@ -143,7 +142,7 @@
 
                         <hr>
 
-                        <div class="bg-white shadow-xl w-full mt-6 p-6 rounded-lg">
+                        <div class="bg-white shadow-lg w-full mt-6 p-6 rounded-lg">
                             <div class="flex flex-row justify-between mb-6">
                                 <p class="text-lg font-bold mb-10">Personal Info</p>
                                 <div class="flex justify-center rounded-2xl shadow-lg w-[74px] h-[32px] font-bold mt-2 hover:opacity-50 transition-opacity cursor-pointer">
@@ -169,21 +168,34 @@
                             </div>
                         </div>
 
+                        <div class="bg-white shadow-lg w-full mt-10 rounded-lg">
+                            <div class="flex flex-row justify-between p-6">
+                                <div class="flex flex-col">
+                                    <p class="text-gray-500">Jumlah Penerimaan Permintaan</p>
+                                    <p class="font-bold">{{ (Auth::user()->approved) }} Permintaan</p>
+                                </div>
+
+                                <div >
+                                    <p class="text-gray-500">Jumlah Penerimaan Permintaan</p>
+                                    <p class="font-bold">{{ (Auth::user()->rejected) }} Permintaan</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="bg-white shadow-xl w-full mt-6 p-6 rounded-lg">
                             <p class="text-lg font-bold mb-6">Bio</p>
 
                             <form action="{{ route('admin.update.profile.bio') }}" method="POST" class="mb-6">
                                 @csrf
-                                <textarea name="" id="" placeholder="Tuliskan sesuatu disini" class="w-full h-32 rounded-lg  border-2">
-                                    {{Auth::user()->bio}}
-                                </textarea>
+                                <textarea name="bio" id="bio" placeholder="Tuliskan sesuatu disini" class="w-full h-32 rounded-lg border-2 bg-gray-100 p-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">{{ trim(old('bio', Auth::user()->bio)) }} </textarea>
+
+                                <div class="flex justify-end mt-6">
+                                    <button type="submit" class="px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-md">
+                                    <i class="fas fa-save mr-2"></i> Save Changes
+                                    </button>
+                                </div>
                             </form>
 
-                            <div class="flex justify-end">
-                                <button type="submit" class="px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-md">
-                                <i class="fas fa-save mr-2"></i> Save Changes
-                                </button>
-                            </div>
                         </div>
 
                         
@@ -191,8 +203,10 @@
 
                     </div>
 
-                    <div class="bg-white shadow-lg rounded-lg p-6 w-[288px] h-[256px]">
+                    <div class="bg-white shadow-lg rounded-lg p-6 w-[288px] h-[356px]">
+                        <p class="text-center text-lg font-bold">Complete your profile</p>
 
+                        <canvas id="profileCompletionChart" width="200" height="200">{{ $profileCompletion }}%</canvas>
                     </div>
                 </div>
             </div>
@@ -201,3 +215,50 @@
     </div>
 </body>
 </html>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('profileCompletionChart').getContext('2d');
+    const profileCompletion = {{ $profileCompletion }}; 
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [profileCompletion, 100 - profileCompletion],
+                backgroundColor: ['#16A34A', '#D1D5DB'],
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+                tooltip: {
+                    enabled: false
+                }
+            }
+        },
+        plugins: [{
+            beforeDraw: function(chart) {
+                let width = chart.width,
+                    height = chart.height,
+                    ctx = chart.ctx;
+
+                ctx.restore();
+                let fontSize = (height / 6).toFixed(2);
+                ctx.font = "bold " + fontSize + "px system-ui";
+                ctx.textBaseline = "middle";
+
+                let text = profileCompletion + "%",
+                    textX = Math.round((width - ctx.measureText(text).width) / 2),
+                    textY = height / 2;
+
+                ctx.fillText(text, textX, textY);
+                ctx.save();
+            }
+        }]
+    });
+
+</script>

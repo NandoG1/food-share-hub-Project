@@ -12,7 +12,9 @@ class AdminSettingsController extends Controller
     public function editAdmin()
     {
         $admin = Auth::guard('admin')->user();
-        return view('admin-settings.settings', compact('admin'));
+        $profileCompletion = $this->getProfileCompletion();
+
+        return view('admin-settings.settings', compact('admin', 'profileCompletion'));
     }
 
     public function editAdminDetail()
@@ -27,6 +29,7 @@ class AdminSettingsController extends Controller
             'admin_name' => 'required|string|max:255',
             'admin_email' => 'required|email|max:255',
             'admin_password' => 'nullable|string|min:6|max:255',
+            'admin_phone' => 'nullable|string|max:15',
         ]);
 
         $admin = Admin::findOrFail($id);
@@ -38,9 +41,11 @@ class AdminSettingsController extends Controller
             $admin->password = bcrypt($request->admin_password);
         }
 
+        $admin->phone = $request->admin_phone;
+
         $admin->save();
 
-        return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
+        return redirect()->route('admin.settings')->with('success', 'Profil berhasil diperbarui!');
     }
 
     public function updatePhoto(Request $request, $id)
@@ -69,11 +74,41 @@ class AdminSettingsController extends Controller
             'bio' => 'nullable|string|max:500',
         ]);
 
+        $bio = trim($request->bio);
+        $bio = preg_replace('/\s+/', ' ', $bio); 
+    
+        
         $admin = Auth::guard('admin')->user();
         $admin->bio = $request->bio;
         $admin->save();
 
         return redirect()->back()->with('success', 'Bio berhasil diperbarui!');
     }
+
+    public function getProfileCompletion()
+    {
+        $admin = Auth::guard('admin')->user();
+
+        $fields = [
+            'name',
+            'email',
+            'password',
+            'phone',
+            'photo',
+            'bio',
+        ];
+
+        $filledFields = 0;
+        foreach ($fields as $field) {
+            if (!empty($admin->$field)) {
+                $filledFields++;
+            }
+        }
+
+        $completionPercentage = round(($filledFields / count($fields)) * 100);
+
+        return $completionPercentage;
+    }
+
 
 }

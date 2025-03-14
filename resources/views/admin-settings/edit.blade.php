@@ -115,36 +115,39 @@
                     <form action="{{ route('admin.update.profile', ['id' => Auth::guard('admin')->user()->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         
-                        <div class="grid grid-cols-2 space-x-4">
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-6">
                             <div class="flex flex-col">
                                 <label for="admin_name">Name</label>
-                                <input type="text" name="admin_name" id="" class="border p-2 mb-6 rounded-lg w-full">
+                                <input type="text" name="admin_name" id="" class="border p-2 rounded-lg w-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                             </div>
 
                             <div class="flex flex-col">
                                 <label for="admin_email">Phone Number</label>
-                                <input type="number" name="admin_phone" id="" class="border p-2 mb-6 rounded-lg w-full">
+                                <input type="number" name="admin_phone" id="" class="border p-2 rounded-lg w-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                             </div>
                             
                             <div class="flex flex-col">
                                 <label for="admin_email">Email</label>
-                                <input type="email" name="admin_email" id="" class="border p-2 mb-6 rounded-lg w-full">
+                                <input type="email" name="admin_email" id="" class="border p-2 rounded-lg w-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                            </div>
+
+                            <div class="flex flex-col">
+                                <label for="admin_email">Password</label>
+                                <input type="password" name="admin_password" id="" class="border p-2 rounded-lg w-full focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
                             </div>
 
                             
 
-                            <div class="flex flex-col">
-                                <label for="admin_email">Password</label>
-                                <input type="password" name="admin_password" id="" class="border p-2 mb-6 rounded-lg w-full">
-                            </div>
-
                         </div>
 
-                        <div class="flex justify-end">
-                                <button type="submit" class="px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-md">
+                        <div class="flex justify-end mt-6">
+                            <button type="submit" class="px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-md">
                                 <i class="fas fa-save mr-2"></i> Save Changes
-                                </button>
-                            </div>
+                            </button>
+                        </div>
+
+                        
+                        
 
                     </form>
 

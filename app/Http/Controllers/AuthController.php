@@ -70,6 +70,20 @@ class AuthController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
+        $adminExists = Admin::where('email', $request->email)->exists();
+        if ($adminExists) {
+            return redirect()->route('login')->withErrors(['email' => 'Email/Password salah. Coba lagi.'])->withInput();
+        }
+    
+        
+        $userExists = User::where('email', $request->email)->exists();
+
+        if (!$userExists) {
+            return redirect()->route('register')->withInput($request->only('email'))
+                ->withErrors(['email' => 'Akun tidak ditemukan. Silakan daftar terlebih dahulu.']);
+        }
+
+
         if (Auth::guard('web')->attempt($credentials, $request->filled('remember'))) {
             return redirect()->route('dashboard');
         }

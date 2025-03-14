@@ -37,26 +37,50 @@
             modal.classList.remove("hidden");
 
             modal.querySelector("ul").innerHTML = `
-                <li><span class="text-black font-medium mr-4">Nama Sekolah</span> <br> ${requestData.school_name}</li>
-                <li><span class="text-black font-medium mr-2">Alamat Sekolah</span> <br> ${requestData.address}</li>
-                <li><span class="text-black font-medium mr-2">Contact Person</span> <br> ${requestData.contact_person}</li>
-                <li><span class="text-black font-medium mr-5">Jumlah Siswa</span> <br> ${requestData.student_count}</li>
-                <li><span class="text-black font-medium">Catatan Tambahan</span> <br> ${requestData.additional_notes}</li>
+                <li class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <span class="text-black font-medium">Nama Sekolah:</span> 
+                        <p>${requestData.school_name}</p>
+                    </div>
+                    <div class="col-span-2">
+                        <span class="text-black font-medium">Contact Person:</span> 
+                        <p>${requestData.contact_person}</p>
+                    </div>
+                </li>
+                <li class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <span class="text-black font-medium">Alamat Sekolah:</span> 
+                        <p>${requestData.address}</p>
+                    </div>
+
+                    <div class="col-span-2">
+                        <span class="text-black font-medium">Jumlah Siswa:</span> 
+                        <p>${requestData.student_count}</p>
+                    </div>
+                </li>
+                <li class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <span class="text-black font-medium">Catatan Tambahan:</span> 
+                        <p>${requestData.additional_notes}</p>
+                    </div>
+                </li>
             `;
         }
 
         document.querySelectorAll(".food-request").forEach(item => {
+
             item.addEventListener("click", function (event) {
                 if (event.target.closest(".approve-btn") || event.target.closest(".reject-btn")) {
                     return;
                 }
 
                 const requestData = {
-                    school_name: this.querySelector("li:nth-child(1)").innerText.split(": ")[1],
-                    address: this.querySelector("li:nth-child(2)").innerText.split(": ")[1],
-                    contact_person: this.querySelector("li:nth-child(3)").innerText.split(": ")[1],
-                    student_count: this.querySelector("li:nth-child(4)").innerText.split(": ")[1],
-                    additional_notes: this.querySelector("li:nth-child(5)") ? this.querySelector("li:nth-child(5)").innerText.split(": ")[1] : "Tidak ada catatan tambahan"
+                    school_name: this.querySelector('[data-field="nama_sekolah"]').innerText,
+                    address: this.querySelector('[data-field="alamat"]').innerText,
+                    contact_person: this.querySelector('[data-field="kontak"]').innerText,
+                    student_count: this.querySelector('[data-field="jumlah_siswa"]').innerText,
+                    additional_notes: this.querySelector('[data-field="catatan"]')?.innerText || "Tidak ada catatan tambahan"
+
                 };
                 openModal(requestData);
             });
@@ -73,46 +97,41 @@
         });
 
         document.querySelectorAll(".approve-btn").forEach(button => {
-            button.addEventListener("click", function (event) {
-                event.stopPropagation(); 
-                let requestId = this.getAttribute("data-id");
-
-                fetch(`/food-requests/${requestId}/approve`, {
-                    method: "PATCH",
-                    headers: {
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                        "Content-Type": "application/json"
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    }
-                });
-            });
-        });
-
-        document.querySelectorAll(".reject-btn").forEach(button => {
-            button.addEventListener("click", function (event) {
+            button.addEventListener("click", async function (event) {
                 event.stopPropagation();
                 let requestId = this.getAttribute("data-id");
 
-                fetch(`/food-requests/${requestId}/reject`, {
+                let response = await fetch(`/food-requests/${requestId}/approve`, {
                     method: "PATCH",
                     headers: {
                         "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
                         "Content-Type": "application/json"
                     }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    }
                 });
+
+                let data = await response.json();
+                if (data.success) location.reload();
             });
         });
+
+        document.querySelectorAll(".rejected-btn").forEach(button => {
+            button.addEventListener("click", async function (event) {
+                event.stopPropagation();
+                let requestId = this.getAttribute("data-id");
+
+                let response = await fetch(`/food-requests/${requestId}/reject`, {
+                    method: "PATCH",
+                    headers: {
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                let data = await response.json();
+                if (data.success) location.reload();
+            });
+        });
+
     });
 </script>
 
@@ -206,19 +225,26 @@
                 <div class="food-request stat-card flex shadow-md bg-white p-6 mt-6 ml-[33px] mr-[32px] rounded-xs w-auto h-auto cursor-pointer">
                     <div class="flex flex-row justify-between w-full">
                             <div>
-                                <div class="inline-flex justify-center items-center text-xs font-semibold rounded-xl bg-yellow-100 text-yellow-800 min-h-[33px] w-auto px-4 mb-4">{{ $requests->status }}</div>
+                                @if($requests->status == 'pending')
+                                    <div class="inline-flex justify-center items-center text-xs font-semibold rounded-xl bg-yellow-100 text-yellow-800 min-h-[33px] w-auto px-4 mb-4">{{ $requests->status }}</div>
+                                @elseif($requests->status == 'approved')
+                                    <div class="inline-flex justify-center items-center text-xs font-semibold rounded-xl bg-green-100 text-green-800 min-h-[33px] w-auto px-4 mb-4">{{ $requests->status }}</div>
+                                @elseif($requests->status == 'rejected')
+                                    <div class="inline-flex justify-center items-center text-xs font-semibold rounded-xl bg-red-100 text-red-800 min-h-[33px] w-auto px-4 mb-4">{{ $requests->status }}</div>
+
+                                @endif
 
                                 <ul class="list-none text-green-500">
-                                    <li>
+                                    <li data-field="nama_sekolah">
                                         <span class="text-black font-medium mr-4">Nama Sekolah:</span> {{ $requests->school_name }}
                                     </li>
-                                    <li>
+                                    <li data-field="alamat">
                                         <span class="text-black font-medium mr-2">Alamat Sekolah:</span> {{ $requests->address }}
                                     </li>
-                                    <li>
+                                    <li data-field="kontak">
                                         <span class="text-black font-medium mr-2">Contact Person:</span> {{ $requests->contact_person }}
                                     </li>
-                                    <li>
+                                    <li data-field="jumlah_siswa">
                                         <span class="text-black font-medium mr-5">Jumlah Siswa:</span> {{ $requests->student_count }}
                                     </li>
                                 </ul>
@@ -284,7 +310,7 @@
                             <h2 class="text-xl font-bold">Detail Permintaan Makanan</h2>
                             <button id="closeModal" class="text-red-500 font-bold text-xl">&times;</button>
                         </div>
-                        <ul class="mt-4 space-y-2">
+                        <ul class="grid grid-cols-2 gap-4 mt-4">
 
                         </ul>
                     </div>

@@ -133,8 +133,8 @@
                     <div class="stat-card bg-white rounded-xl p-6 border-l-4 border-green-500 shadow-lg hover:shadow-xl">
                         <div class="flex justify-between items-center">
                             <div>
-                                <h2 class="text-sm font-semibold uppercase text-gray-500 mb-1">Pesanan yang disetujui</h2>
-                                <p class="text-4xl font-bold text-gray-800">{{ $approvedRequests }}</p>
+                                <h2 class="text-sm font-semibold uppercase text-gray-500 mb-1">Pesanan yang disetujui {{ Auth::user()->name }}</h2>
+                                <p class="text-4xl font-bold text-gray-800">{{ Auth::user()->approved }}</p>
                             </div>
                             <div class="bg-green-100 p-3 rounded-lg">
                                 <i class="fas fa-check-circle text-2xl text-green-600"></i>
@@ -142,7 +142,7 @@
                         </div>
                         <div class="mt-4 flex items-center {{ $approvedRequestsDifference >= 0 ? 'text-green-600' : 'text-red-600' }}">
                             <i class="fas {{ $approvedRequestsDifference >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }} mr-1"></i>
-                            <span>{{ abs($approvedRequestsDifference) }} pcs dari bulan lalu</span>
+                            <span>{{ Auth::user()->approved }} pcs dari bulan lalu</span>
                         </div>
                     </div>
                     

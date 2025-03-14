@@ -65,20 +65,35 @@ class FoodRequestController extends Controller
     public function approve($id)
     {
         $foodRequest = FoodRequest::findOrFail($id);
+        $admin = Auth::user(); // Admin yang sedang login
+    
         $foodRequest->status = 'approved';
+        $foodRequest->admin_id = $admin->id; // Simpan admin yang menyetujui
         $foodRequest->save();
-
+    
+        // Tambahkan jumlah approve pada admin
+        $admin->increment('approved');
+    
         return redirect()->back()->with('success', 'Permintaan makanan disetujui.');
     }
-
+    
     public function reject($id)
     {
         $foodRequest = FoodRequest::findOrFail($id);
+        $admin = Auth::user(); // Admin yang sedang login
+    
         $foodRequest->status = 'rejected';
+        $foodRequest->admin_id = $admin->id; // Simpan admin yang menolak
         $foodRequest->save();
-
+    
+        // Tambahkan jumlah reject pada admin
+        $admin->increment('rejected');
+    
         return redirect()->back()->with('success', 'Permintaan makanan ditolak.');
     }
+    
+
+
 
 
 }

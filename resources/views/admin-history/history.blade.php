@@ -206,28 +206,28 @@
            @if ($foodRequests->isEmpty())
                 <p class="flex justify-center mt-6 text-gray-500">Tidak ada permintaan makanan.</p>
             @else
-            <div class="flex flex-wrap">
-                @foreach($foodRequests->sortBy('id') as $index => $requests)
-                    <div class="food-request stat-card flex shadow-md bg-white p-6 mt-6 ml-[35px] mr-[35px] rounded-lg min-w-[600px] h-auto cursor-pointer 
-                                {{ $loop->iteration % 4 < 2 ? 'flex-row' : 'flex-col' }}">
-                        <div class="flex flex-col justify-between w-full">
-                            <div class="flex font-medium text-lg">
-                                <p class="mr-2">Permintaan</p>
-                                <p>{{ $requests->id }}</p>
+                <div class="flex flex-wrap">
+                    @foreach($foodRequests->sortBy('id') as $index => $requests)
+                        <div class="food-request stat-card flex shadow-md bg-white p-6 mt-6 ml-[35px] mr-[35px] rounded-lg min-w-[600px] h-auto cursor-pointer 
+                                    {{ $loop->iteration % 4 < 2 ? 'flex-row' : 'flex-col' }}">
+                            <div class="flex flex-col justify-between w-full">
+                                <div class="flex font-medium text-lg">
+                                    <p class="mr-2">Permintaan</p>
+                                    <p>{{ $requests->id }}</p>
+                                </div>
+                                <ul class="list-none text-green-500">
+                                    <li><span class="text-black font-medium mr-4">Nama Sekolah:</span> {{ $requests->school_name }}</li>
+                                    <li><span class="text-black font-medium mr-2">Alamat Sekolah:</span> {{ $requests->address }}</li>
+                                    <li><span class="text-black font-medium mr-2">Contact Person:</span> {{ $requests->contact_person }}</li>
+                                    <li><span class="text-black font-medium mr-5">Jumlah Siswa:</span> {{ $requests->student_count }}</li>
+                                </ul>
                             </div>
-                            <ul class="list-none text-green-500">
-                                <li><span class="text-black font-medium mr-4">Nama Sekolah:</span> {{ $requests->school_name }}</li>
-                                <li><span class="text-black font-medium mr-2">Alamat Sekolah:</span> {{ $requests->address }}</li>
-                                <li><span class="text-black font-medium mr-2">Contact Person:</span> {{ $requests->contact_person }}</li>
-                                <li><span class="text-black font-medium mr-5">Jumlah Siswa:</span> {{ $requests->student_count }}</li>
-                            </ul>
                         </div>
-                    </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
 
 
-            <div id="foodRequestModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+                <div id="foodRequestModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
                     <div class="bg-white p-6 rounded-lg shadow-lg w-1/2">
                         <div class="flex justify-between items-center">
                             <h2 class="text-xl font-bold">Detail Permintaan Makanan</h2>

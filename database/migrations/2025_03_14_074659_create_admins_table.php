@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('role')->default('admin');
             $table->string('photo', 15)->nullable();
+            $table->string('bio')->nullable();
+            $table->integer('approved')->default(0);
+            $table->integer('rejected')->default(0);
             $table->timestamps();
         });
     }
