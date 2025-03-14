@@ -25,13 +25,6 @@
             width: 4px;
             background-color: #fff;
         }
-
-        textarea::placeholder{
-            font-size: 14px;
-            font-weight: 400;
-            color: #A5A5A5;
-            padding: 10px;
-        }
     </style>
 </head>
 <body>
@@ -102,7 +95,7 @@
         <div class="flex-1">
           
             <header class="bg-white shadow-md p-6 flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-800">Admin Settings</h1>
+                <h1 class="text-2xl font-bold text-gray-800">Settings Details</h1>
                 <div class="flex items-center space-x-4">
                     <button class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
                         <i class="fas fa-bell text-gray-600"></i>
@@ -118,83 +111,45 @@
 
 
             <div class="p-8">
-                <div class="flex flex-row space-x-2 ">
-                    <div class="bg-white shadow-lg rounded-lg p-6 w-full">
-                        <form action="{{ route('admin.update.profile.photo', ['id' => Auth::guard('admin')->user()->id]) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="flex flex-row">
-                                <img class="ml-[34px] w-32 h-32 rounded-full text-center justify-center" 
-                                    src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('Images/profile-picture.png') }}" 
-                                    alt="Foto Profil Admin">
-
-                                <div class="p-6">
-                                    <label class="bg-white flex justify-center items-center rounded-md shadow-lg font-bold h-[47px] w-[194px] text-center mb-4 hover:opacity-50 transition-opacity cursor-pointer">
-                                        Upload New Photo
-                                        <input type="file" name="admin_photo" class="hidden" onchange="this.form.submit()">
-                                    </label>
-
-                                    <div class="flex flex-col">
-                                        <p class="text-gray-500">At least 800x800 px recommended.</p>
-                                        <p class="text-gray-500">JPG or PNG is allowed</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-
-                        <hr>
-
-                        <div class="bg-white shadow-xl w-full mt-6 p-6 rounded-lg">
-                            <div class="flex flex-row justify-between mb-6">
-                                <p class="text-lg font-bold mb-10">Personal Info</p>
-                                <div class="flex justify-center rounded-2xl shadow-lg w-[74px] h-[32px] font-bold mt-2 hover:opacity-50 transition-opacity cursor-pointer">
-                                    <a href="{{ route('admin.settings.detail') }}">Edit</a>
-                                </div>
+                <div class="bg-white shadow-lg rounded-lg p-6 w-full">
+                    <form action="{{ route('admin.update.profile', ['id' => Auth::guard('admin')->user()->id]) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        
+                        <div class="grid grid-cols-2 space-x-4">
+                            <div class="flex flex-col">
+                                <label for="admin_name">Name</label>
+                                <input type="text" name="admin_name" id="" class="border p-2 mb-6 rounded-lg w-full">
                             </div>
 
-                            <div class="flex flex-row justify-between space-x-4 w-full">
-                                <div>
-                                    <p class="text-gray-500">Full Name</p>
-                                    <p class="font-bold">{{ Auth::user()->name }}</p>
-                                </div>
-
-                                <div>
-                                    <p class="text-gray-500">Email</p>
-                                    <p class="font-bold">{{ Auth::user()->email }}</p>
-                                </div>
-
-                                <div>
-                                    <p class="text-gray-500">Phone Number</p>
-                                    <p class="font-bold">{{ Auth::user()->phone ?? 'Belum ada nomor telepon' }}</p>
-                                </div>
+                            <div class="flex flex-col">
+                                <label for="admin_email">Phone Number</label>
+                                <input type="number" name="admin_phone" id="" class="border p-2 mb-6 rounded-lg w-full">
                             </div>
+                            
+                            <div class="flex flex-col">
+                                <label for="admin_email">Email</label>
+                                <input type="email" name="admin_email" id="" class="border p-2 mb-6 rounded-lg w-full">
+                            </div>
+
+                            
+
+                            <div class="flex flex-col">
+                                <label for="admin_email">Password</label>
+                                <input type="password" name="admin_password" id="" class="border p-2 mb-6 rounded-lg w-full">
+                            </div>
+
                         </div>
 
-                        <div class="bg-white shadow-xl w-full mt-6 p-6 rounded-lg">
-                            <p class="text-lg font-bold mb-6">Bio</p>
-
-                            <form action="{{ route('admin.update.profile.bio') }}" method="POST" class="mb-6">
-                                @csrf
-                                <textarea name="" id="" placeholder="Tuliskan sesuatu disini" class="w-full h-32 rounded-lg  border-2">
-                                    {{Auth::user()->bio}}
-                                </textarea>
-                            </form>
-
-                            <div class="flex justify-end">
+                        <div class="flex justify-end">
                                 <button type="submit" class="px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-md">
                                 <i class="fas fa-save mr-2"></i> Save Changes
                                 </button>
                             </div>
-                        </div>
 
-                        
+                    </form>
 
-
-                    </div>
-
-                    <div class="bg-white shadow-lg rounded-lg p-6 w-[288px] h-[256px]">
-
-                    </div>
                 </div>
+                
             </div>
 
         </div>

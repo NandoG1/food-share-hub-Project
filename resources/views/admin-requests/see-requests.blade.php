@@ -150,7 +150,7 @@
                 
                 <div class="mb-6">
                     <p class="text-xs text-green-200 font-semibold uppercase tracking-wider mb-2 ml-4">Settings</p>
-                    <a href="#" class="sidebar-link flex items-center px-4 py-3 mb-2 hover:bg-green-700 hover:bg-opacity-50 rounded-lg transition-colors">
+                    <a href="{{ route('admin.settings') }}" class="sidebar-link flex items-center px-4 py-3 mb-2 hover:bg-green-700 hover:bg-opacity-50 rounded-lg transition-colors">
                         <i class="fas fa-cog mr-3 w-5 text-center"></i>
                         <span>Pengaturan</span>
                     </a>
@@ -200,7 +200,7 @@
 
 
             @if ($foodRequests->isEmpty())
-                <p class="text-gray-500">Tidak ada permintaan makanan.</p>
+                <p class="flex justify-center mt-6 text-gray-500">Tidak ada permintaan makanan.</p>
             @else
                 @foreach ($foodRequests as $requests)
                 <div class="food-request stat-card flex shadow-md bg-white p-6 mt-6 ml-[33px] mr-[32px] rounded-xs w-auto h-auto cursor-pointer">

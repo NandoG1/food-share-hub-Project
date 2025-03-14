@@ -15,17 +15,16 @@ class AdminSetting extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'admin_id',
         'admin_name',
         'admin_address',
         'admin_phone',
         'admin_email',
-        'city',
-        'postal_code',
+        'admin_photo',
     ];
 
     public function admin()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Admin::class);
     }
 }

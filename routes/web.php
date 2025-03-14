@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FoodRequestController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\RequestController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,14 +28,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::middleware(['auth', 'admin'])->group(function(){
+Route::middleware(['auth:admin'])->group(function(){
     Route::get('/admin/dashboard', [DashboardController::class, 'indexAdmin'])->name('admin.dashboard');
     Route::get('/admin/food-requests', [FoodRequestController::class, 'seerequests'])->name('admin.food-requests');
     Route::patch('/admin/food-requests/{id}/approve', [FoodRequestController::class, 'approve'])->name('food-requests.approve');
     Route::patch('/admin/food-requests/{id}/reject', [FoodRequestController::class, 'reject'])->name('food-requests.reject');
     Route::get('/admin/history', [AidHistoryController::class, 'historyAdmin'])->name('admin.history');
     Route::get('/admin/history/status', [AidHistoryController::class, 'seeHistory'])->name('admin.see.history');
-    Route::get('/admin/settings', [SettingsController::class, 'editAdmin'])->name('admin.settings');
+    Route::get('/admin/settings', [AdminSettingsController::class, 'editAdmin'])->name('admin.settings');
+    Route::get('/admin/settings/detail', [AdminSettingsController::class, 'editAdminDetail'])->name('admin.settings.detail');
+    Route::post('/admin/update-profile/{id}', [AdminSettingsController::class, 'updateAdmin'])->name('admin.update.profile');
+    Route::post('/admin/settings/update-profile/photo/{id}', [AdminSettingsController::class, 'updatePhoto'])->name('admin.update.profile.photo');
+    Route::post('/admin/settings/update-profile/bio', [AdminSettingsController::class, 'updateBio'])->name('admin.update.profile.bio');
     
 });
 

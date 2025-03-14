@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FoodRequest;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -44,7 +45,6 @@ class DashboardController extends Controller
 
     public function indexAdmin()
     {
-       
         $totalRequests = FoodRequest::count();
 
       

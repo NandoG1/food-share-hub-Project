@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -62,21 +63,20 @@ class AuthController extends Controller
         }
     
         $credentials = $request->only('email', 'password');
+
         
-        if (!Auth::attempt($credentials, $request->filled('remember'))) {
-            return back()->withErrors([
-                'email' => 'Email/Password salah. Coba lagi.',
-            ])->withInput();
+        if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
+            session(['guard' => 'admin']);            
+            return redirect()->route('admin.dashboard');
+        }
+
+        if (Auth::guard('web')->attempt($credentials, $request->filled('remember'))) {
+            return redirect()->route('dashboard');
         }
     
-        $user = Auth::user();
-        if (!$user) {
-            return back()->withErrors(['email' => 'Login gagal, coba lagi.']);
-        }
-    
-        return $user->role == 'admin'
-            ? redirect()->route('admin.dashboard')
-            : redirect()->route('dashboard');
+        return back()->withErrors([
+            'email' => 'Email/Password salah. Coba lagi.',
+        ])->withInput();
     }
 
     public function logout(Request $request)

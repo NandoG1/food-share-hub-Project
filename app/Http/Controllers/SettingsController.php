@@ -49,11 +49,5 @@ class SettingsController extends Controller
             ->with('success', 'School information has been updated successfully.');
     }
 
-    // public function editAdmin()
-    // {
-    //     $user = Auth::user();
-    //     $schoolSetting = User::where('user_id', 1)->first();
-
-    //     return view('admin-settings.settings', compact('adminSetting'));
-    // }
+    
 }
