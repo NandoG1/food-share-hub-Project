@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer('approved')->default(0);
             $table->integer('rejected')->default(0);
             $table->timestamps();
-        });
+        }, 'utf8mb4_unicode_ci');
     }
 
     /**

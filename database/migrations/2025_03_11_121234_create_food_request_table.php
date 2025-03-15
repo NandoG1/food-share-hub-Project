@@ -24,8 +24,9 @@ return new class extends Migration
             $table->text('additional_notes')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('rejection_reason')->nullable();
+            $table->foreignId('admin_id')->nullable()->constrained('admins')->onDelete('cascade');
             $table->timestamps();
-        });
+        }, 'utf8mb4_unicode_ci');
     }
 
     /**
