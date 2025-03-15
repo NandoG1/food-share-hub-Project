@@ -110,6 +110,23 @@ class AidHistoryController extends Controller
         return view('aid-history.show', compact('foodRequest', 'schoolHistory'));
     }
 
+    public function historyAdmin()
+    {
+        $foodRequests = FoodRequest::orderBy('created_at', 'desc')->paginate(10);
 
+        return view('admin-history.history', compact('foodRequests'));
+    }
+
+
+    public function seeHistory(Request $request)
+    {
+        $status = $request->query('status'); 
+ 
+        $foodRequests = FoodRequest::when($status, function ($query, $status) {
+            return $query->where('status', $status);
+        })->get();
+    
+        return view('admin-history.history', compact('foodRequests'));
+    }
     
 }

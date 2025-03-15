@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SchoolSetting;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,4 +48,6 @@ class SettingsController extends Controller
         return redirect()->route('settings.edit')
             ->with('success', 'School information has been updated successfully.');
     }
+
+    
 }

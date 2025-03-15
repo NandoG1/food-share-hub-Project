@@ -14,23 +14,15 @@ class AdminMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-<<<<<<< HEAD
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role == 'admin') {
-            return $next($request);
+        dd(Auth::guard('admin')->user(), session()->all()); 
+        if (!Auth::guard('admin')->check()) {
+            return redirect()->route('login')->withErrors(['access' => 'Anda tidak memiliki akses sebagai Admin.']);
         }
+    
+        return $next($request);
+     
 
-        return redirect()->route('login')->withErrors(['access' => 'Anda tidak memiliki akses sebagai Admin.']);
-
-=======
-    public function handle(Request $request, Closure $next): Response
-    {
-        if (Auth::check() && optional(Auth::user())->isAdmin()) {
-            return $next($request);
-        }
-
-        return redirect('/dashboard')->with('error', 'Unauthorized access.');
->>>>>>> 3564f8aa615b12ed2a22b05693f9024994f54f82
     }
 }
