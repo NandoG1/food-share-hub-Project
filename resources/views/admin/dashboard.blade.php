@@ -31,7 +31,7 @@
 <body class="bg-gray-100">
     <div class="flex min-h-screen">
        
-        <div class="w-64 bg-gradient-to-b from-green-600 to-green-500 text-white shadow-lg relative z-10">
+        <div class="w-64 bg-gradient-to-b from-blue-600 to-blue-500 text-white shadow-lg relative z-10">
            
             <div class="p-6 flex items-center space-x-3 border-b border-green-400 border-opacity-30">
                 <div class="rounded-full p-2 shadow-md">

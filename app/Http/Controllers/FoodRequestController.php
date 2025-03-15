@@ -46,7 +46,6 @@ class FoodRequestController extends Controller
 
     public function show(FoodRequest $foodRequest)
     {
-        // Check if the authenticated user owns this food request
         if (Auth::id() !== $foodRequest->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -77,13 +76,15 @@ class FoodRequestController extends Controller
         return redirect()->back()->with('success', 'Permintaan makanan disetujui.');
     }
     
-    public function reject($id)
+    public function reject($id, Request $request)
     {
         $foodRequest = FoodRequest::findOrFail($id);
         $admin = Auth::user(); // Admin yang sedang login
     
         $foodRequest->status = 'rejected';
         $foodRequest->admin_id = $admin->id; // Simpan admin yang menolak
+        // $foodRequest->rejection_reason = 
+        $foodRequest->rejection_reason = $request->input('rejection_reason');
         $foodRequest->save();
     
         // Tambahkan jumlah reject pada admin
