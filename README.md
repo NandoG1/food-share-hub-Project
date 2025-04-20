@@ -1,31 +1,59 @@
-# Food Share Hub
-Food Share Hub adalah platform berbasis web yang dirancang untuk memoderasi dan mengelola distribusi program makan gratis. Platform ini memungkinkan pengguna untuk mengajukan permintaan makanan, jumlah kebutuhan, serta melihat status pengiriman makanan (dalam perjalanan atau belum dikirim).
+# 🥗 Food Share Hub
+Food Share Hub is a web-based mini-project designed to moderate and manage the distribution of free meal programs. Built with Laravel and Blade, this platform allows users to request meal aid for their schools, track request status, and manage their personal data. The project is created as part of an initiative to build meaningful software that contributes to social good.
 
 
-## Fitur Utama
-1. Ajukan Permintaan: Page dengan fitur bagi pengguna untuk mengajukan permintaan program makan gratis ke sekolahnya.
-2. Status Permintaan: Page dengan fitur bagi pengguna untuk melihat apakah permintaan tersebut masih pending ataupun sudah diterima atau ditolak
-3. Riwayat Bantuan: Page dengan fitur bagi pengguna untuk melihat riwayat bantuan yang telah diajukan
-4. Pengaturan Pengguna: Page dengan fitur bagi pengguna untuk mengubah atau mengatur data dirinya.
+## 🌟 Key Features
+- **Submit Meal Request**: A page that allows users to request free meal assistance for their schools by filling out the number of meals needed and other relevant information.
 
-## Teknologi yang Digunakan
+- **Request Status**: A page to track the status of submitted requests — whether they are pending, approved, or rejected.
 
-Framework: Laravel
-Database: MySQL
-Bahasa Pemrograman: PHP
-Frontend: Blade Template Engine
-Server: Apache (XAMPP/LAMP/WAMP)
+- **Aid History**: A page that displays a list of previously submitted and processed aid requests.
 
+- **User Settings**: A page that allows users to view and update their profile or personal data.
+
+## 🛠️ Technologies Used
+- Framework: Laravel
+- Database: MySQL
+- Programming Language: PHP
+- Frontend: Blade Template Engine
+- Server: Apache (XAMPP / LAMP / WAMP)
+  
 ## Instalasi
-1. Git clone https://github.com/yimeiw/foodShareHub.git
-2. cd foodShareHub
-3. composer install
-4. copy .env.example .env
-5. php artisan key:generate
-6. code . (masuk ke dalam vscode dan buka terminalnya)
-7. buka XAMPP dan buat database bernama laravel 
-8. php artisan migrate
-9. php artisan serve (buka link localhost)
+1. Clone this repository:  
+   ```
+   git clone https://github.com/NandoG1/food-share-hub-Project.git
+   ```
+2. Navigate into the project directory:
+   ```
+   cd foodShareHub
+   ```
+3. Install all PHP dependencies using Composer:
+   ```
+   composer install
+   ```
+4. Create the environment configuration file:
+   ```
+   cp .env.example .env
+   ```
+5. Generate the application key:  
+   ```
+   php artisan key:generate
+   ```
+6. Open the project in Visual Studio Code (optional):  
+   ```
+   code .
+   ```
+7. Start XAMPP and create a new database:  
+   Open XAMPP, start Apache and MySQL, then create a database named "laravel" using phpMyAdmin.
+8. Run the database migrations:  
+   ```
+   php artisan migrate
+   ```
+9. Start the Laravel development server:  
+   ```
+   php artisan serve
+   ```
+After completing these steps, open the provided localhost link to use the app in your browser.
 
 ## License
 
